@@ -21,7 +21,7 @@ pubkeys = {private_to_public(test_uuid): {'exists': True, 'user_id': 0, 'latest_
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
