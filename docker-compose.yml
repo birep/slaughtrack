@@ -21,7 +21,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/taylor/Develop/s-t/app/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
       - traefik-public-certificates:/certificates
 
 volumes:
