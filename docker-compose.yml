@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  slaughtrack:
+    build: ./slaughtrack/
+    ports:
+      - 8000:8000
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app-http.rule=Host(`slaughtrack.lol`)"
+      - "traefik.http.services.slaughtrack.loadbalancer.server.port=8000"
+      - "traefik.http.routers.app-http.tls=true"
+      - "traefik.http.routers.app-http.tls.certresolver=letsencrypt"
+
+  traefik:
+    image: traefik:v2.3
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/taylor/Develop/s-t/app/traefik/traefik.toml:/etc/traefik/traefik.toml
+      - traefik-public-certificates:/certificates
+
+volumes:
+  traefik-public-certificates:

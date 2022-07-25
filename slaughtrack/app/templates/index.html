@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>slaughtrack - a laughtrack for your slack</title>
+    <style>
+      header {
+        padding: 10px;
+margin-bottom: 30px;
+font-size: larger;
+      }
+    </style>
+  </head>
+  <body>
+    <header><img src="slaughtrack-250.png"><br><strong>sl</strong><em>aughtr</em><strong>ack</strong> &dash; A laughtrack for your Slack</header>
+    <main>
+      <label for="pubkey">Slaughtrack access token</label>
+      <input name="pubkey" id="pubkey" type="text">
+    </main>
+    <footer>
+
+    </footer>
+
+    <script>
+      var last_event = {'timestamp': 0, 'event_id': 0}
+      var source_0 = "/web/laugh.mp3"
+      var source_1 = "/web/wilhelm.mp3"
+      var audio_0 = document.createElement("audio");
+      var audio_1 = document.createElement("audio");
+      audio_0.load()
+      audio_1.load()
+      audio_0.src = source_0;
+      audio_1.src = source_1;
+
+      function Main(delay) {
+        setInterval(()=> {
+          fetch("/u/" + document.getElementById('pubkey').value + "/")
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            if (last_event.timestamp != data.timestamp) {
+              last_event = data;
+              console.log(last_event);
+              if (Date.now()-last_event.timestamp < 5000) {
+                if (last_event.event_id == '0') {audio_0.play()}
+                if (last_event.event_id == '1') {audio_1.play()}
+              }
+            }
+          })
+        }, delay)
+      }
+    
+      window.onload = function(){
+      Main(500)
+      }
+    </script>
+
+  </body>
+</html>
